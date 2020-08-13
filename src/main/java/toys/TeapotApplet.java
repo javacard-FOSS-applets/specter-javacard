@@ -126,9 +126,12 @@ public class TeapotApplet extends Applet{
      * @param apdu the APDU command where we will put the result.
      */
     private void SendData(APDU apdu){
-        apdu.setOutgoing();
-        apdu.setOutgoingLength(data.length());
-        apdu.sendBytesLong(data.get(), (short)0, data.length());
+        byte[] buf = apdu.getBuffer();
+        Util.arrayCopyNonAtomic(data.get(), (short)0, buf, (short)0, data.length());
+        // apdu.setOutgoing();
+        // apdu.setOutgoingLength(data.length());
+        // apdu.sendBytesLong(data.get(), (short)0, data.length());
+        apdu.setOutgoingAndSend((short)0, (short)data.length());
     }
 
 }
